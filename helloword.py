@@ -1,3 +1,3 @@
-print("Hello World");
+print("Hello World")
 ##dbtjd
 ## 힘들어요
