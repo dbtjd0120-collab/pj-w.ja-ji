@@ -145,6 +145,8 @@ def preprocess_all():
 
     for _, row in df_trans.iterrows():
         st_name = row['환승역명']
+        # '4호선' 또는 '4' 형태를 통일하기 위해 '호선' 글자를 빈칸으로 대체
+        # .strip() -> 문자열 앞뒤의 불필요한 공백 제거
         from_line = str(row['호선']).replace('호선', '').strip()
         to_line = str(row['환승노선']).replace('호선', '').strip()
         
