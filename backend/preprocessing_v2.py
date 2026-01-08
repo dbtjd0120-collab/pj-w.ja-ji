@@ -132,32 +132,33 @@ def preprocess_all():
 
     # --- PART B: 환승 소요 시간 데이터 처리 ---
 
-#     # 6. 환승 정보 구조화
-#     print("환승 데이터 처리 중...")
-#     transfer_dict = {}
+    # 6. 환승 정보 구조화
+    print("환승 데이터 처리 중...")
+    transfer_dict = {}
     
-#     for _, row in df_trans.iterrows():
-#         st_name = row['환승역명']
-#         from_line = row['호선']
-#         # '4호선' 또는 '4' 형태를 통일하기 위해 '호선' 글자 제거
-#         to_line = str(row['환승노선']).replace('호선', '').strip()
-#         walk_sec = time_str_to_seconds(row['환승소요시간'])
+    for _, row in df_trans.iterrows():
+        st_name = row['환승역명']
+        from_line = row['호선']
+        # '4호선' 또는 '4' 형태를 통일하기 위해 '호선' 글자를 빈칸으로 대체
+        # .strip() -> 문자열 앞뒤의 불필요한 공백 제거
+        to_line = str(row['환승노선']).replace('호선', '').strip()
+        walk_sec = time_str_to_seconds(row['환승소요시간'])
         
-#         if st_name not in transfer_dict:
-#             transfer_dict[st_name] = {}
+        if st_name not in transfer_dict:
+            transfer_dict[st_name] = {}
         
-#         # Key 예시: "1:4" (1호선에서 4호선으로 갈 때)
-#         transfer_dict[st_name][f"{from_line}:{to_line}"] = walk_sec
+        # Key 예시: "1:4" (1호선에서 4호선으로 갈 때)
+        transfer_dict[st_name][f"{from_line}:{to_line}"] = walk_sec
 
-#     with open(f"{OUTPUT_DIR}transfer_list.json", 'w', encoding='utf-8') as f:
-#         json.dump(transfer_dict, f, ensure_ascii=False, indent=2)
-#     print(" -> transfer_list.json 저장 완료")
+    with open(f"{OUTPUT_DIR}transfer_list.json", 'w', encoding='utf-8') as f:
+        json.dump(transfer_dict, f, ensure_ascii=False, indent=2)
+    print(" -> transfer_list.json 저장 완료")
 
-#     # 7. 역 목록(Station List) 저장
-#     unique_stations = df[['역사코드', '역사명', '호선']].drop_duplicates().to_dict(orient='records')
-#     with open(f"{OUTPUT_DIR}stations_list.json", 'w', encoding='utf-8') as f:
-#         json.dump(unique_stations, f, ensure_ascii=False)
-#     print(" -> stations_list.json 저장 완료")
+    # 7. 역 목록(Station List) 저장
+    unique_stations = df[['역사코드', '역사명', '호선']].drop_duplicates().to_dict(orient='records')
+    with open(f"{OUTPUT_DIR}stations_list.json", 'w', encoding='utf-8') as f:
+        json.dump(unique_stations, f, ensure_ascii=False)
+    print(" -> stations_list.json 저장 완료")
 
 if __name__ == "__main__":
     preprocess_all()
