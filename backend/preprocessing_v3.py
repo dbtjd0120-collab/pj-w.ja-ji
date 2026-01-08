@@ -112,8 +112,11 @@ def preprocess_all():
                 })
             graph[station_code].sort(key=lambda x: x['dept_time']) # 시간순 정렬 (이진 탐색 알고리즘 사용 위함)
             # .sort(key) -> key 기준으로 리스트 정렬
-            # key= -> 정렬 기준 지정
-            # lambda x : -> 익명 함수 정의, x는 리스트의 각 원소(여기서는 딕셔너리)
+            # key= -> 정렬 기준 지정. 함수로 집어넣어야 함.
+            # lambda x : -> x를 결과값으로 주는 익명함수
+            # graph = {특정 역사코드 : {"dest_code": "0151", "dest_name": "시청", "dept_time": 32400, "line": "1", ... }}, ... 의 형식인데
+            # sort 함수가 정렬하려고 꺼낸 {"dest_code": "0151", "dest_name": "시청", ...} 부분을 x라고 받기로 한 거임.
+            # station_code를 key값으로 가지는 value를 x로 받는데, 그 x는 또 여러 개의 딕셔너리 형태인것임.
             # x['dept_time'] -> 해당 딕셔너리 x에서 출발 시간에 해당하는 값 반환
 
             # # lambda를 안쓰려면 함수를 한 번만 쓰더라도 따로 정의하고 사용해야 함
