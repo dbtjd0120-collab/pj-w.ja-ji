@@ -22,11 +22,11 @@ class SubwayPathfinder:
 
     def _get_today_type(self):  # 날짜를 요일로
         """함수 정의 앞에 붙은 _ 하나는 내부용(private) 메서드임을 나타냄"""
-        weekday = datetime.now().weekday()
-        day_dict = {5: 'saturday', 6: 'holiday'}
-
-        """day_dict에 없으면(0~4) 'weekday'를 반환"""
-        return day_dict.get(weekday, 'weekday')      # .get(key, default)
+        def _get_today_type(self):
+            day_type = datetime.now().weekday()
+            if day_type < 5: return 'weekday'
+            elif day_type == 5: return 'saturday'
+            else: return 'holiday'
 
     def _load_data(self):       # 데이터 로드
         try:
