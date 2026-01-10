@@ -2,7 +2,6 @@ import time
 import pandas as pd
 import json
 import os
-from utils import TimeUtils
 
 # 파일 경로 설정
 # 1. 이 파일(preprocessing_v2.py)의 절대 경로를 계산합니다.
@@ -28,6 +27,18 @@ print(f"루트 경로: {project_root}")
 print(f"불러올 파일: {TIMETABLE_PATH}")
 print(f"----------------------")
 
+def time_str_to_seconds(t_str):
+    """ HH:MM:SS 또는 MM:SS 형태의 시간을 초(int)로 변환 """
+    if pd.isna(t_str): return None
+    try:
+        parts = list(map(int, str(t_str).split(':')))
+        if len(parts) == 3:  # HH:MM:SS
+            return parts[0] * 3600 + parts[1] * 60 + parts[2]
+        elif len(parts) == 2:  # MM:SS
+            return parts[0] * 60 + parts[1]
+        return 0
+    except:
+        return 0
 
 def preprocess_all():
     # 1. 데이터 로딩
@@ -47,8 +58,8 @@ def preprocess_all():
     # --- PART A: 열차 시간표 그래프 생성 ---
     
     # 2. 시간 변환 및 정렬
-    df['arr_sec'] = df['열차도착시간'].apply(TimeUtils.str_to_seconds)
-    df['dept_sec'] = df['열차출발시간'].apply(TimeUtils.str_to_seconds)
+    df['arr_sec'] = df['열차도착시간'].apply(time_str_to_seconds)
+    df['dept_sec'] = df['열차출발시간'].apply(time_str_to_seconds)
     df['arr_sec'] = df['arr_sec'].fillna(df['dept_sec'])
     # 결국 출발시간 이전에만 도착하면 되니까 결측치는 0이 아닌 출발시간으로 대체
     # .fillna() : fill+na(Not Available) -> 결측치(NaN)를 채운다는 의미
@@ -149,7 +160,7 @@ def preprocess_all():
                     transfer_dict[st_code] = {}
                 
                 # 데이터 저장
-                walk_sec = TimeUtils.str_to_seconds(row['환승소요시간'])
+                walk_sec = time_str_to_seconds(row['환승소요시간'])
                 walk_distance = int(row.get('환승거리', 0))
                 transfer_dict[st_code][f"{from_line}:{to_line}"] = {
                     "walk_sec": walk_sec,

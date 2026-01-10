@@ -1,7 +1,6 @@
 import os
 import json
 import heapq
-from utils import TimeUtils
 from datetime import datetime
 
 # --- 경로 설정 ---
@@ -12,27 +11,30 @@ DATA_DIR = os.path.join(project_root, 'data', 'processed')
 
 class SubwayPathfinder:
     def __init__(self):
-        # 함수 정의 앞에 붙은 _ 두개는 name mangling(이름변경). 규칙에 따라 외부에서 접근 불가
+        """
+        함수 정의 앞에 붙은 _ 두개는 name mangling(이름변경). 규칙에 따라 외부에서 접근 불가
+        같은 클래스의 다른 함수를 사용할 것이라 self를 인자로 정의함
+        """
         self.day_type = self._get_today_type()
         self._load_data()
         self._build_indices()
-        print(f"[{self.day_type}] 데이터 로딩 완료. 탐색 준비가 되었습니다.")
+        # print(f"[{self.day_type}] 데이터 로딩 완료. 탐색 준비가 되었습니다.")
 
-    def _get_today_type(self):
-        # 함수 정의 앞에 붙은 _ 하나는 내부용(private) 메서드임을 나타냄
+    def _get_today_type(self):  # 날짜를 요일로
+        """함수 정의 앞에 붙은 _ 하나는 내부용(private) 메서드임을 나타냄"""
         weekday = datetime.now().weekday()
-        day_map = {5: 'saturday', 6: 'holiday'}
+        day_dict = {5: 'saturday', 6: 'holiday'}
 
-        # day_map에 없으면(0~4) 'weekday'를 반환
-        return day_map.get(weekday, 'weekday')      # .get(key, default)
+        """day_dict에 없으면(0~4) 'weekday'를 반환"""
+        return day_dict.get(weekday, 'weekday')      # .get(key, default)
 
-    def _load_data(self):
+    def _load_data(self):       # 데이터 로드
         try:
             with open(os.path.join(DATA_DIR, f'graph_{self.day_type}.json'), 'r', encoding='EUC-KR') as f:
                 self.graph = json.load(f)
-            with open(os.path.join(DATA_DIR, 'transfer_list.json'), 'r', encoding='utf-8') as f:
+            with open(os.path.join(DATA_DIR, 'transfer_list.json'), 'r', encoding='EUC-KR') as f:
                 self.transfers = json.load(f)
-            with open(os.path.join(DATA_DIR, 'stations_list.json'), 'r', encoding='utf-8') as f:
+            with open(os.path.join(DATA_DIR, 'stations_list.json'), 'r', encoding='EUC-KR') as f:
                 self.stations_raw = json.load(f)
         except Exception as e:
             print(f"❌ 로딩 실패: {e}")
