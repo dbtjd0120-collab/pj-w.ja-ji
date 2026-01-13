@@ -67,14 +67,14 @@ class SubwayPathfinder:
         end_codes = self.name_to_codes.get(end_name)
         if not start_codes or not end_codes: return None
 
-        start_time = TimeUtils.str_to_seconds(departure_time_str)
+        start_time = self._str_to_seconds(departure_time_str)
         pq = [] # (비용, 현재시간, 현재코드, 환승횟수, 경로로그)
         min_costs = {}
 
         for code in start_codes:
             info = self.code_to_info[code]
             heapq.heappush(pq, (start_time, start_time, code, 0, [{
-                "station": start_name, "line": info['호선'], "time": TimeUtils.seconds_to_str(start_time), "type": "START"
+                "station": start_name, "line": info['호선'], "time": self._seconds_to_str(start_time), "type": "START"
             }]))
 
         while pq:
@@ -107,7 +107,7 @@ class SubwayPathfinder:
                     
                     new_path = path + [{
                         "station": train['dest_name'], "line": train['line'], 
-                        "time": TimeUtils.seconds_to_str(train['arr_time']), "type": "MOVE",
+                        "time": self._seconds_to_str(train['arr_time']), "type": "MOVE",
                         "express": "급행" in train.get('train_code', '')
                     }]
                     heapq.heappush(pq, (new_cost, train['arr_time'], dest_code, transfer_count, new_path))
@@ -127,10 +127,30 @@ class SubwayPathfinder:
                         
                         new_path = path + [{
                             "station": self.code_to_info[curr_code]['역사명'], "line": target_line,
-                            "time": TimeUtils.seconds_to_str(arrival_time), "type": "TRANSFER"
+                            "time": self._seconds_to_str(arrival_time), "type": "TRANSFER"
                         }]
                         heapq.heappush(pq, (cost_penalty, arrival_time, target_code, new_transfers, new_path))
         return None
+    
+    def _str_to_seconds(t_str):
+        """ 문자열(HH:MM:SS) -> 초(int) 변환 """
+        if t_str is None or t_str != t_str:  # t_str != t_str 은 NaN을 체크하는 방법
+            return None
+
+        try:
+            parts = list(map(int, str(t_str).split(':')))       # HH:MM:SS 또는 MM:SS 형태로 정수 list 생성 (길이는 알아서)
+            if len(parts) == 3: return parts[0] * 3600 + parts[1] * 60 + parts[2]
+            elif len(parts) == 2: return parts[0] * 60 + parts[1]
+            return 0
+        except:
+            return 0
+        
+    def _seconds_to_str(seconds):
+        """ 초(int) -> 문자열(HH:MM:SS) 변환 """
+        h = seconds // 3600
+        m = (seconds % 3600) // 60
+        s = seconds % 60
+        return f"{h:02}:{m:02}:{s:02}"
 
     def _get_start_index(self, schedule, current_time):
         low, high = 0, len(schedule) - 1
