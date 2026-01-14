@@ -112,6 +112,7 @@ def preprocess_all():
                     "dest_code": row['next_station_code'],  # 다음 역 코드
                     "dest_name": row['next_station_name'],  # 다음 역 이름
                     "line": row['호선'],
+                    # "train_code": row['열차코드'],
                     "dept_time": row['dept_sec'],           # 현재 역 출발 시간 (초)
                     "arr_time": row['next_arr_sec'],        # 다음 역 도착 시간 (초)
                     "express": row['급행여부']  ,           # 급행 여부
