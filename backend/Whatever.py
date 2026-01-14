@@ -69,7 +69,9 @@ class SubwayPathfinder:
             self.name_to_codes.setdefault(name, []).append(code) # 역 이름에 대해 여려 역사 코드 저장 
             self.station_group.setdefault(name, {})[line] = code # 환승 위해 환승 가능 역에 대한 다른 호선 역 코드 저장
 
-    def search(self, start_name, end_name, departure_time_str):  # <------  def search(self, start_name, end_name, departure_time=None):
+    def search(self, start_name, end_name, departure_time_str=None):
+        if departure_time_str is None:
+            depareture_time_str = datetime.now(ZoneInfor("Asia/Seoul"))  # <------  def search(self, start_name, end_name, departure_time=None):
         """최단 시간과 최소 환승 두 가지 경로를 모두 반환"""                      #     if departure_time is None:
         print(f"\n🔍 '{start_name}' -> '{end_name}' 경로 탐색 중...")        #      departure_time = datetime.now(ZoneInfo("Asia/Seoul"))
                                                                             # 으로 시간 입력 시에는 지정 시간으로, 입력 ㄴㄴ시 현재 시간으로 부터 출발. 
