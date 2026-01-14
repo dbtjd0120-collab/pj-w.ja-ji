@@ -65,6 +65,8 @@ def preprocess_all():
     df['arr_sec'] = df['열차도착시간'].apply(time_str_to_seconds)
     df['dept_sec'] = df['열차출발시간'].apply(time_str_to_seconds)
     df['arr_sec'] = df['arr_sec'].fillna(df['dept_sec'])
+    df['dept_sec'] = df['dept_sec'].fillna(0)
+
     # 결국 출발시간 이전에만 도착하면 되니까 결측치는 0이 아닌 출발시간으로 대체
     # .fillna() : fill+na(Not Available) -> 결측치(NaN)를 채운다는 의미
     df = df.sort_values(by=['주중주말', '열차코드', 'arr_sec'])
@@ -74,6 +76,7 @@ def preprocess_all():
     # 다음 행의 정보를 현재 행의 'next_' 컬럼(옆칸)으로 가져옴
     df['next_station_code'] = df['역사코드'].shift(-1)
     df['next_station_name'] = df['역사명'].shift(-1)
+    df['next_line'] = df['호선'].shift(-1)           # 다음줄 호선이 동일한지 확인
     df['next_arr_sec'] = df['arr_sec'].shift(-1)
     df['next_train_code'] = df['열차코드'].shift(-1)
     
@@ -83,7 +86,11 @@ def preprocess_all():
     # df[조건] -> 시리즈를 비교해보며 조건에 맞는 행들만 필터링
     # .copy() -> 원본df를 보존한 상태로 조건에 맞는 복사본 생성
     # .copy()를 하지 않으면 원본의 일부를 참조하는 뷰(View)가 되어 이후 연산에서 SettingWithCopyWarning 경고 발생
-    valid_edges = df[df['열차코드'] == df['next_train_code']].copy()
+    valid_edges = df[
+        (df['열차코드'] == df['next_train_code']) and 
+        (df['호선'] == df['next_line']) and
+        (df['역사코드'] != df['next_station_code'])
+    ].copy()
     valid_edges['travel_time'] = valid_edges['next_arr_sec'] - valid_edges['dept_sec']
 
     # 5. 요일별 그래프 저장
