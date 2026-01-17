@@ -10,9 +10,9 @@ graph = {
     "A":[{"to":"B","travel_time":2,"is_express":"False","line":"1호선","dep_time":[0,5,10,15,20,25,30,35,40,45,50,55]}],
     "B":[{"to":"A","travel_time":2,"is_express":"False","line":"1호선","dep_time":[3,8,13,18,23,28,33,38,43,48,53,58]},
          {"to":"C","travel_time":2,"is_express":"False","line":"1호선","dep_time":[4,9,14,19,24,29,34,39,44,49,54,59]},
-         {"to":"D","travel_time":3,"is_express":"True","line":"1호선","dep_time":[3,12,23,32,39,44,52,58]}],
+         {"to":"D","travel_time":3,"is_express":"True","line":"1호선","dep_time":[10,20,30,40,50]}],
     "C":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선","dep_time":[1,11,18,22,28,32,41,51,58]}],
-    "D":[{"to":"B","travel_time":3,"is_express":"True","line":"1호선","dep_time":[3,8,16,23,31,40,49,53,59]},
+    "D":[{"to":"B","travel_time":3,"is_express":"True","line":"1호선","dep_time":[5,15,25,35,45,55]},
          {"to":"E","travel_time":2,"is_express":"False","line":"1호선","dep_time":[2,8,19,25,32,40,45,50,55]},
          {"to":"I","travel_time":2,"is_express":"False","line":"2호선","dep_time":[12, 19, 27, 33, 41, 48, 52, 55, 59]},
          {"to":"H","travel_time":2,"is_express":"False","line":"2호선","dep_time":[4, 15, 22, 31, 38, 43, 50, 56, 59]}],
@@ -27,9 +27,15 @@ graph = {
     "G":[{"to":"H","travel_time":2,"is_express":"False","line":"2호선","dep_time":[4, 9, 19, 25, 36, 42, 47, 50, 53]}]
 }
 #환승에 대한 travel_time를 생각해봐야함 (환승이 이점이 되면 안되고 벌점이 되어야함)
+from datetime import datetime
+time_str = input("출발 시간을 입력하세요 (Enter입력시 현재 시간 입력) (HH:MM) : ")
+if time_str == "":
+    now = datetime.now()
+    h = now.hour
+    m = now.minute
+else:
+    h , m = map(int,time_str.split(":"))
 
-time_str = input("현재 시간을 입력하세요 (HH:MM) : ")
-h , m = map(int,time_str.split(":"))
 while h > 24 or m > 60:
     time_str = input("다시 입력하시오(H < 25)/(M < 60) (HH:MM) : ")
     h , m = map(int,time_str.split(":"))
