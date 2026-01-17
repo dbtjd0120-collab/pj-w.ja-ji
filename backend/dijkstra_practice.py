@@ -7,39 +7,56 @@
 """
 
 graph = {
-    "A":[{"to":"B","travel_time":2,"is_express":"False","line":"1호선"}],
-    "B":[{"to":"A","travel_time":2,"is_express":"False","line":"1호선"},
-         {"to":"C","travel_time":2,"is_express":"False","line":"1호선"},
-         {"to":"D","travel_time":3,"is_express":"True","line":"1호선"}],
-    "C":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선"}],
-    "D":[{"to":"B","travel_time":3,"is_express":"True","line":"1호선"},
-         {"to":"E","travel_time":2,"is_express":"False","line":"1호선"},
-         {"to":"I","travel_time":2,"is_express":"False","line":"2호선"},
-         {"to":"H","travel_time":2,"is_express":"False","line":"2호선"}],
-    "E":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선"},
-         {"to":"F","travel_time":2,"is_express":"False","line":"1호선"}],
-    "F":[{"to":"E","travel_time":2,"is_express":"False","line":"1호선"}],
-    "I":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선"},
-         {"to":"J","travel_time":2,"is_express":"False","line":"2호선"}],
-    "J":[{"to":"I","travel_time":2,"is_express":"False","line":"2호선"}],
-    "H":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선"},
-         {"to":"G","travel_time":2,"is_express":"False","line":"2호선"}],
-    "G":[{"to":"H","travel_time":2,"is_express":"False","line":"2호선"}]
+    "A":[{"to":"B","travel_time":2,"is_express":"False","line":"1호선","dep_time":[0,5,10,15,20,25,30,35,40,45,50,55]}],
+    "B":[{"to":"A","travel_time":2,"is_express":"False","line":"1호선","dep_time":[3,8,13,18,23,28,33,38,43,48,53,58]},
+         {"to":"C","travel_time":2,"is_express":"False","line":"1호선","dep_time":[4,9,14,19,24,29,34,39,44,49,54,59]},
+         {"to":"D","travel_time":3,"is_express":"True","line":"1호선","dep_time":[3,12,23,32,39,44,52,58]}],
+    "C":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선","dep_time":[1,11,18,22,28,32,41,51,58]}],
+    "D":[{"to":"B","travel_time":3,"is_express":"True","line":"1호선","dep_time":[3,8,16,23,31,40,49,53,59]},
+         {"to":"E","travel_time":2,"is_express":"False","line":"1호선","dep_time":[2,8,19,25,32,40,45,50,55]},
+         {"to":"I","travel_time":2,"is_express":"False","line":"2호선","dep_time":[12, 19, 27, 33, 41, 48, 52, 55, 59]},
+         {"to":"H","travel_time":2,"is_express":"False","line":"2호선","dep_time":[4, 15, 22, 31, 38, 43, 50, 56, 59]}],
+    "E":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선","dep_time":[7, 13, 25, 29, 34, 46, 51, 57, 58]},
+         {"to":"F","travel_time":2,"is_express":"False","line":"1호선","dep_time":[2, 11, 18, 23, 30, 42, 45, 53, 54]}],
+    "F":[{"to":"E","travel_time":2,"is_express":"False","line":"1호선","dep_time":[9, 14, 21, 28, 36, 40, 47, 55, 59]}],
+    "I":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선","dep_time":[5, 8, 16, 24, 32, 39, 44, 49, 57]},
+         {"to":"J","travel_time":2,"is_express":"False","line":"2호선","dep_time":[3, 10, 17, 26, 35, 41, 52, 56]}],
+    "J":[{"to":"I","travel_time":2,"is_express":"False","line":"2호선","dep_time":[6, 12, 18, 22, 37, 43, 49, 54, 58]}],
+    "H":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선","dep_time":[2, 10, 15, 27, 31, 39, 45, 51, 56]},
+         {"to":"G","travel_time":2,"is_express":"False","line":"2호선","dep_time":[7, 14, 23, 28, 33, 40, 48, 55, 59]}],
+    "G":[{"to":"H","travel_time":2,"is_express":"False","line":"2호선","dep_time":[4, 9, 19, 25, 36, 42, 47, 50, 53]}]
 }
 #환승에 대한 travel_time를 생각해봐야함 (환승이 이점이 되면 안되고 벌점이 되어야함)
 
+time_str = input("현재 시간을 입력하세요 (HH:MM) : ")
+h , m = map(int,time_str.split(":"))
+while h > 24 or m > 60:
+    time_str = input("다시 입력하시오(H < 25)/(M < 60) (HH:MM) : ")
+    h , m = map(int,time_str.split(":"))
+    
+cur_time = 60*h + m
+def get_next_train(dep_list,cur_time):
+                for i in range(h,h+24):
+                    for d in dep_list:
+                        candidate = i*60 + d
+                        if candidate >= cur_time:
+                            return candidate
+                return None
+
 import heapq
 
-def dijkstra(graph,start):
+
+def dijkstra(graph,start,cur_time):
     #1. 거리 테이블 초기화
     INF = (10**9,10**9)
     dist = {node: INF for node in graph}
-    dist[start] = (0,0)
+    dist[start] = (0,cur_time)
+    
 
 
     #2. 우선순위 큐 (거리,노드)
     pq = []
-    heapq.heappush(pq,((0,0),start,None))
+    heapq.heappush(pq,((0,cur_time),start,None))
     '''heapq 설명
     heap는 부모노드가 자식노드보다 무조건 작게 만들게끔
     가장 맨 앞에 나오는 요소가 가장 작은 값을 가질수 있게 만듦
@@ -87,10 +104,10 @@ def dijkstra(graph,start):
         C 처리 후   → [(5, E)]
         E 처리 후   → []
         ''' 
-        (cur_transfer,cur_dist), cur_node,prev_line = heapq.heappop(pq)
+        (cur_transfer,cur_time), cur_node,prev_line = heapq.heappop(pq)
 
         #이미 더 짧은 경로가 있으면 스킵
-        if (cur_transfer,cur_dist) > dist[cur_node]:
+        if (cur_transfer,cur_time) > dist[cur_node]:
             #만약 이 조건이 맞다면 while문의 다음 반복으로 넘어가라는 이야기
             continue
         # 현재 노드에서 갈 수 있는 곳들 확인
@@ -107,12 +124,17 @@ def dijkstra(graph,start):
             train_is_express = edge["is_express"]
             next_line = edge["line"]
             add_transfer = 0
-            new_dist = cur_dist + travel_time
+            dep_list = edge["dep_time"]
+
+            
+            next_train_time = get_next_train(dep_list,cur_time)
+            wait_time = next_train_time - cur_time
+            new_time = next_train_time + travel_time
 
             if prev_line is not None and prev_line != next_line:
                 add_transfer = 1
             new_transfer = cur_transfer + add_transfer
-            new_cost = (new_transfer, new_dist)
+            new_cost = (new_transfer, new_time)
             # 더 짧은 경로 발견 시 갱신
 
             if new_cost < dist[next_node]:
@@ -152,10 +174,27 @@ def get_path(prev,start,end):
 start = input("출발 지점을 입력하세요 : ")
 end = input("도착지점을 입력하세요 : ")
 
-dist, prev = dijkstra(graph, start)
+dist, prev = dijkstra(graph, start,cur_time)
 path = get_path(prev,start, end)
 
-print("최단거리:",dist[end][1])
+total_arr = int(dist[end][1])
+day =total_arr//1440
+Ah = total_arr//60
+Am = total_arr%60
+
+if Am < m:
+    Ah = Ah - 1
+    Am = Am + 60
+    print("걸린 시간: ", Ah - h,":",Am - m)
+    Ah = Ah + 1
+    Am = Am - 60
+else:
+    print("걸린 시간: ", Ah - h,":",Am - m)
+
+if Ah >= 24:
+    Ah = Ah - 24
+
+
 print("환승 횟수: ",dist[end][0])
 print("경로:"," -> ".join(path))
 '''join에 관한 설명
@@ -173,6 +212,40 @@ path = ["A", 2, "B"]  # ❌ 에러
  ㄴ 필요하면 map(str,path)
 
 '''
+print("출발 시간:  ", h , ":" , m)
+if day >= 1:
+    print("도착 시간:  ", "다음날", Ah, ":", Am)
+else:
+    print("도착 시간:  ", Ah, ":", Am)
 
+'''
+Ex) 출발 : A
+    도착 : G
+    출발 시각 : 12:56
+    도착 시각 : 13:25
+    총 소요시간 : 29    
+A - B  
+기다리는 시간 4분
+이동시간 2분
+총 소요시간 6분 
+나중 시간 13:02
+B - D
+기다리는 시간 1분
+이동시간 3분 
+총 소요시간 4분
+나중시간 13:06
+D - H
+기다리는 시간 9분
+이동시간 2분
+총 소요시간 11분
+나중시간 13:18
+H - G
+기다리는 시간 5분
+이동시간 2분
+총 소요시간 7분
+나중시간 13:25분
 
+이동시간(travel_time)은 굳이 볼 필요 없고 어짜피 기다리는 시간 + 이동시간이 전체적인 travel_time 이니까 
+이렇게 하면 환승하는것도 신경쓸 필요 없음 (환승할때 시간 추가하는 것만 넣으면 됌)
+'''
 
