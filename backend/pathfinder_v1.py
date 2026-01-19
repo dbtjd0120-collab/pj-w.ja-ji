@@ -70,9 +70,12 @@ def print_route_details(path_log, start, end, dist):
 
     while curr != start:
         prev, time, line, is_exp = path_log[curr]
-        if is_exp: exp_tag = "(급행)" 
-        else: exp_tag = ""
-        
+        # if is_exp: exp_tag = "(급행)" 
+        # else: exp_tag = ""
+        exp_tag = "(급행)" if is_exp else ""        # 삼항연산자
+
+
+
         if line == "trs":
             details.append(f"[{prev} -> {curr}] 환승, 도보 {time}분")
         else:
