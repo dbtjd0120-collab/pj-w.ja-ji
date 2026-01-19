@@ -7,7 +7,7 @@ import heapq
                        /
              [G]—2분—[H]
 """
-                                 
+
 graph = {
     "A":[{"to":"B","travel_time":2,"is_express":False,"line":"1호선"}],
     "B":[{"to":"A","travel_time":2,"is_express":False,"line":"1호선"},
