@@ -158,7 +158,7 @@ def dijkstra(graph,start,cur_time):
 
             if new_cost < dist[next_node]:
                 dist[next_node] = new_cost
-                prev[next_node] = cur_node
+                prev[next_node] = (cur_node,type)
                 '''prev[next_node]에 관한 설명
                 next_node에 최단 거리로 도달했을 때,
                 바로 이전 노드는 cur_node였다
@@ -179,10 +179,16 @@ def get_path(prev,start,end):
     cur = end
     #도착지에서부터 거꾸러 되짚어 볼거임
     while cur != start:
-        #출발역에서 도착할때까지 반복
-        path.append(cur)
+        prev_node , edge_type = prev[cur]
+        if edge_type == "transfer":
+             #출발역에서 도착할때까지 반복
+            path.append(cur)
+            path.append("(환승)")
+        else:
+             path.append(cur)
+
         #현재 노드를 경로에 추가
-        cur = prev[cur]
+        cur = prev_node
         #최단 경로일때 뒤로 한칸 이동 ("D"였을 경우 "B"로 이동)
         #만약 cur == "D"/ prev["D"] = "B" -> cur = "B"
 
