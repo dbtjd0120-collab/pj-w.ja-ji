@@ -7,24 +7,28 @@
 """
 
 graph = {
-    "A":[{"to":"B","travel_time":2,"is_express":"False","line":"1호선","dep_time":[0,5,10,15,20,25,30,35,40,45,50,55]}],
-    "B":[{"to":"A","travel_time":2,"is_express":"False","line":"1호선","dep_time":[3,8,13,18,23,28,33,38,43,48,53,58]},
-         {"to":"C","travel_time":2,"is_express":"False","line":"1호선","dep_time":[4,9,14,19,24,29,34,39,44,49,54,59]},
-         {"to":"D","travel_time":3,"is_express":"True","line":"1호선","dep_time":[10,20,30,40,50]}],
-    "C":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선","dep_time":[1,11,18,22,28,32,41,51,58]}],
-    "D":[{"to":"B","travel_time":3,"is_express":"True","line":"1호선","dep_time":[5,15,25,35,45,55]},
-         {"to":"E","travel_time":2,"is_express":"False","line":"1호선","dep_time":[2,8,19,25,32,40,45,50,55]},
-         {"to":"I","travel_time":2,"is_express":"False","line":"2호선","dep_time":[12, 19, 27, 33, 41, 48, 52, 55, 59]},
-         {"to":"H","travel_time":2,"is_express":"False","line":"2호선","dep_time":[4, 15, 22, 31, 38, 43, 50, 56, 59]}],
-    "E":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선","dep_time":[7, 13, 25, 29, 34, 46, 51, 57, 58]},
-         {"to":"F","travel_time":2,"is_express":"False","line":"1호선","dep_time":[2, 11, 18, 23, 30, 42, 45, 53, 54]}],
-    "F":[{"to":"E","travel_time":2,"is_express":"False","line":"1호선","dep_time":[9, 14, 21, 28, 36, 40, 47, 55, 59]}],
-    "I":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선","dep_time":[5, 8, 16, 24, 32, 39, 44, 49, 57]},
-         {"to":"J","travel_time":2,"is_express":"False","line":"2호선","dep_time":[3, 10, 17, 26, 35, 41, 52, 56]}],
-    "J":[{"to":"I","travel_time":2,"is_express":"False","line":"2호선","dep_time":[6, 12, 18, 22, 37, 43, 49, 54, 58]}],
-    "H":[{"to":"D","travel_time":2,"is_express":"False","line":"1호선","dep_time":[2, 10, 15, 27, 31, 39, 45, 51, 56]},
-         {"to":"G","travel_time":2,"is_express":"False","line":"2호선","dep_time":[7, 14, 23, 28, 33, 40, 48, 55, 59]}],
-    "G":[{"to":"H","travel_time":2,"is_express":"False","line":"2호선","dep_time":[4, 9, 19, 25, 36, 42, 47, 50, 53]}]
+    "A":[{"to":"B","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[0,5,10,15,20,25,30,35,40,45,50,55]}],
+    "B":[{"to":"A","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[3,8,13,18,23,28,33,38,43,48,53,58]},
+         {"to":"C","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[4,9,14,19,24,29,34,39,44,49,54,59]},
+         {"to":"D1","travel_time":3,"is_express":"True","line":"1호선","type":"train","dep_time":[10,20,30,40,50]}],
+    "C":[{"to":"D1","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[1,11,18,22,28,32,41,51,58]},
+         {"to":"B","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[2,8,13,19,21,25,30,35,40,43,48,55]}],
+    "D1":[{"to":"B","travel_time":3,"is_express":"True","line":"1호선","type":"train","dep_time":[5,15,25,35,45,55]},
+          {"to":"C","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[3,8,12,18,23,29,36,38,41,48,52,59]},
+          {"to":"E","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[2,8,19,25,32,40,45,50,55]},
+          {"to":"D2","walk_time":1,"type":"transfer"}],
+    "D2":[{"to":"D1","walk_time":1,"type":"transfer"},
+         {"to":"I","travel_time":2,"is_express":"False","line":"2호선","type":"train","dep_time":[12, 19, 27, 33, 41, 48, 52, 55, 59]},
+         {"to":"H","travel_time":2,"is_express":"False","line":"2호선","type":"train","dep_time":[4, 15, 22, 31, 38, 43, 50, 56, 59]}],
+    "E":[{"to":"D1","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[7, 13, 25, 29, 34, 46, 51, 57, 58]},
+         {"to":"F","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[2, 11, 18, 23, 30, 42, 45, 53, 54]}],
+    "F":[{"to":"E","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[9, 14, 21, 28, 36, 40, 47, 55, 59]}],
+    "I":[{"to":"D2","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[5, 8, 16, 24, 32, 39, 44, 49, 57]},
+         {"to":"J","travel_time":2,"is_express":"False","line":"2호선","type":"train","dep_time":[3, 10, 17, 26, 35, 41, 52, 56]}],
+    "J":[{"to":"I","travel_time":2,"is_express":"False","line":"2호선","type":"train","dep_time":[6, 12, 18, 22, 37, 43, 49, 54, 58]}],
+    "H":[{"to":"D2","travel_time":2,"is_express":"False","line":"1호선","type":"train","dep_time":[2, 10, 15, 27, 31, 39, 45, 51, 56]},
+         {"to":"G","travel_time":2,"is_express":"False","line":"2호선","type":"train","dep_time":[7, 14, 23, 28, 33, 40, 48, 55, 59]}],
+    "G":[{"to":"H","travel_time":2,"is_express":"False","line":"2호선","type":"train","dep_time":[4, 9, 19, 25, 36, 42, 47, 50, 53]}]
 }
 #환승에 대한 travel_time를 생각해봐야함 (환승이 이점이 되면 안되고 벌점이 되어야함)
 from datetime import datetime
@@ -125,21 +129,30 @@ def dijkstra(graph,start,cur_time):
             일 경우 edge는 graph["B"]의 모든 정보(딕셔너리)를 가져온다.
 
             '''
-            next_node = edge["to"]
-            travel_time = edge["travel_time"]
-            train_is_express = edge["is_express"]
-            next_line = edge["line"]
-            add_transfer = 0
-            dep_list = edge["dep_time"]
-
             
-            next_train_time = get_next_train(dep_list,cur_time)
-            wait_time = next_train_time - cur_time
-            new_time = next_train_time + travel_time
+            next_node = edge["to"]
+            add_transfer = 0
+            type = edge["type"]
 
-            if prev_line is not None and prev_line != next_line:
-                add_transfer = 1
-            new_transfer = cur_transfer + add_transfer
+            if type == "train":
+                travel_time = edge["travel_time"]
+                train_is_express = edge["is_express"]
+                next_line = edge["line"]
+                dep_list = edge["dep_time"]
+                next_train_time = get_next_train(dep_list,cur_time)
+                
+                if next_train_time is None:
+                     continue
+                new_time = next_train_time + travel_time
+                wait_time = next_train_time - cur_time
+            else:
+                 walk_time = edge["walk_time"]
+                 new_time = cur_time + walk_time
+
+            if type == "transfer":
+                 new_transfer = cur_transfer + 1
+            else:
+                 new_transfer = cur_transfer
             new_cost = (new_transfer, new_time)
             # 더 짧은 경로 발견 시 갱신
 
