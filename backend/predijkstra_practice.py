@@ -54,22 +54,22 @@ def dijkstra(graph, trans, start_station, start_line, end_station):
             break
 
         # 1️⃣ 열차 이동
-        for (nxt_station, nxt_line), w in graph.get((station, line), {}).items():
-            new_time = curr_time + w
-            nxt_state = (nxt_station, nxt_line)
+        for (nxt_station, nxt_line), w in graph.get((station, line), {}).items(): #열차를 타고 이동 가능한 모든 다음 상태를 순회
+            new_time = curr_time + w #현재까지 누적 시간 + 열차 이동 시간
+            nxt_state = (nxt_station, nxt_line) #다음 상태를 (역, 호선) 형태로 생성
 
-            if new_time < dist.get(nxt_state, float("inf")):
+            if new_time < dist.get(nxt_state, float("inf")):#이미 알고 있는 최단 시간보다 더 빠른 경로인지 검사
                 dist[nxt_state] = new_time
                 prev[nxt_state] = (station, line)
                 heapq.heappush(pq, (new_time, nxt_state))
 
         # 2️⃣ 대기 / 환승 (trans)
-        if station in trans:
-            for key, info in trans[station].items():
+        if station in trans:  #현재 역이 대기 / 환승 가능한 역인지 확인
+            for key, info in trans[station].items(): #이 역에서 가능한 모든 대기/환승 케이스 순회
                 from_line, to_line = key.split(":")
                 if from_line == line:
                     wait_time = info["w"]
-                    nxt_state = (station, to_line)
+                    nxt_state = (station, to_line) 
                     new_time = curr_time + wait_time
 
                     if new_time < dist.get(nxt_state, float("inf")):
