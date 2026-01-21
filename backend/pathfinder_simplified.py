@@ -100,60 +100,60 @@ def print_route_details(navi_log, start, end, cost, mode=0):
     if mode == 0: start_minutes , _ = cost[start]
     else: _, start_minutes = cost[start]
 
-    # 경로 역추적
-    path_info = []
+    # 경로 역추적 리스트 생성
     path = []
+    full_path = []
     curr = end
+
     while curr != start:
+        # 이전 역, 이동시간, 타고온 호선, 급행 여부를 받음.
         prev, travel_time, line, is_exp = navi_log[curr]
-        path_info.append({
+        path.append({
             "from": prev,
             "to": curr,
             "time": travel_time,
             "line": line,
             "is_exp": is_exp
         })
-        path.append(curr)
+        full_path.append(curr)
         curr = prev
-    path.append(start)
-    
-    path_info.reverse()
+
+    full_path.append(start)
     path.reverse()
+    full_path.reverse()
 
     details = []
 
-    if path_info:
-        s = path_info[0]
-        curr_st_change = [s["from"], s["to"]]
-        curr_line = s["line"]
-        curr_is_exp = s["is_exp"]
-        curr_duration = s["time"]
+    details.append(f"[{path[0]['from']}")
+    st_count = 0
+    duration = 0
+    for i in range(0, len(path)-1):
+        if path[i]['line'] != "trs":
+            details.append(f" -> {path[i]['to']}")
+            st_count += 1
+            duration += path[i]['time']
+            continue
 
-        for i in range(1, len(path_info)):
-            p = path_info[i]
-            # 호선과 급행 여부가 같으면 (환승 trs 제외) 역 이름과 시간만 누적
-            if p["line"] == curr_line and p["is_exp"] == curr_is_exp and p["line"] != "trs":
-                curr_st_change.append(p["to"])
-                curr_duration += p["time"]
-            else:
-                # 호선이 바뀌었으므로 지금까지의 구간 출력 리스트에 추가
-                details.append(format_path_line(curr_st_change, curr_line, curr_is_exp, curr_duration))
-                
-                # 새로운 구간 시작
-                curr_st_change = [p["from"], p["to"]]
-                curr_line = p["line"]
-                curr_is_exp = p["is_exp"]
-                curr_duration = p["time"]
-        
-        # 마지막 남은 구간 추가
-        details.append(format_path_line(curr_st_change, curr_line, curr_is_exp, curr_duration))
+        if path[i]['line'] == "trs":
+            exp_tag = "(급행)" if path[i]["is_exp"] else ""
+            details.append(f"] {path[i-1]['line']}{exp_tag}, {st_count}개 역 이동, {duration}분 소요")
+            st_count = 0
+            duration = 0
+            details.append(f"\n[{path[i]['from']} -> {path[i]['to']}] 환승, 도보 {path[i]['time']}분 소요")
+            details.append(f"\n[{path[i]['to']}")
+            continue
 
-    print(f"\n[{'최단 시간' if mode==0 else '최소 환승'}] 전체 요약: {' -> '.join(path)}")
-    print(f"결과: {total_time}분 도착 예정 ({total_time - start_minutes}분 소요) | 환승: {trs_count}번")
-    print("-" * 60)
+    exp_tag = "(급행)" if path[-1]["is_exp"] else ""
+    details.append(f" -> {path[-1]['to']}")
+    details.append(f"] {path[-1]['line']}{exp_tag}, {st_count}개 역 이동, {duration}분 소요")
+
+    print(f"\n[{'최단 시간' if mode==0 else '최소 환승'}] 경로: {' -> '.join(full_path)} | {total_time}분 도착 예정 ({total_time - start_minutes}분 소요) | 환승: {trs_count}번")
+    # 소요시간 출력부 수정 필요 -> cost는 튜플형태.
+    print("-" * 40)
     for detail in details:
-        print(detail)
-    print("-" * 60)
+        print(detail, end="")
+    print("\n", "-" * 40)
+
 
 def format_path_line(nodes, line, is_exp, duration):
     """[역1 -> 역2 -> 역3] 호선명(급행), 00분 소요 형식으로 변환"""
