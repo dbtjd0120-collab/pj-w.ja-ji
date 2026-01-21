@@ -140,6 +140,7 @@ def dijkstra(graph,start,cur_time):
                 next_line = edge["line"]
                 dep_list = edge["dep_time"]
                 next_train_time = get_next_train(dep_list,cur_time)
+                new_transfer = cur_transfer
                 
                 if next_train_time is None:
                      continue
@@ -148,11 +149,8 @@ def dijkstra(graph,start,cur_time):
             else:
                  walk_time = edge["walk_time"]
                  new_time = cur_time + walk_time
-
-            if type == "transfer":
                  new_transfer = cur_transfer + 1
-            else:
-                 new_transfer = cur_transfer
+
             new_cost = (new_transfer, new_time)
             # 더 짧은 경로 발견 시 갱신
 
