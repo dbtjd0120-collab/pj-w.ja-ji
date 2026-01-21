@@ -59,11 +59,11 @@ class SubwayPathfinder:
         return h * 3600 + m * 60
 
     def _sec_to_time(self, sec):
-        sec %= 86400
+        sec = int(sec)
         return f"{sec//3600:02d}:{(sec%3600)//60:02d}"
 
     # -------------------------
-    # 출발 상태 생성
+    # 출발 상태
     # -------------------------
     def _get_start_states(self, start_name):
         states = []
@@ -75,8 +75,10 @@ class SubwayPathfinder:
             code = st["역사코드"]
             line = st["호선"]
 
+            # 일반
             states.append((code, line, False))
 
+            # 급행 가능 여부
             has_express = any(
                 e["line"] == line and e.get("express", 0) == 1
                 for e in self.graph.get(code, [])
@@ -90,7 +92,7 @@ class SubwayPathfinder:
         return states
 
     # -------------------------
-    # 최단 경로 탐색
+    # 다익스트라
     # -------------------------
     def find_path(self, start_name, end_name, start_time):
         start_states = self._get_start_states(start_name)
@@ -100,7 +102,7 @@ class SubwayPathfinder:
         prev = {}
         end_candidates = []
 
-        MAX_WAIT = 3600  # 1시간
+        MAX_WAIT = 3600  # 최대 대기 1시간
 
         for s in start_states:
             dist[s] = 0
@@ -114,14 +116,21 @@ class SubwayPathfinder:
             if cost > dist[state]:
                 continue
 
+            # 🔥 도착 후보 이후 가지치기
+            best_end = min(c[0] for c in end_candidates) if end_candidates else float("inf")
+            if cost > best_end:
+                continue
+
             current_time = start_time + cost
 
-            # 🎯 도착 후보 수집 (즉시 종료 ❌)
+            # 🎯 도착 후보
             if self.station_code_to_name[station] == end_name:
                 end_candidates.append((cost, state))
                 continue
 
+            # -----------------
             # 1️⃣ 열차 이동
+            # -----------------
             for e in self.graph.get(station, []):
                 if e["line"] != line:
                     continue
@@ -148,7 +157,9 @@ class SubwayPathfinder:
                     })
                     heapq.heappush(pq, (next_cost, next_state))
 
+            # -----------------
             # 2️⃣ 환승
+            # -----------------
             if station in self.transfers:
                 for k, info in self.transfers[station].items():
                     from_line, to_line = k.split(":")
@@ -168,7 +179,12 @@ class SubwayPathfinder:
                         })
                         heapq.heappush(pq, (next_cost, next_state))
 
-                        # 🔥 환승 후 급행도 즉시 후보로 추가
+                    # 🔥 환승 후 급행 (실제 있을 때만)
+                    has_express = any(
+                        e["line"] == to_line and e.get("express", 0) == 1
+                        for e in self.graph.get(station, [])
+                    )
+                    if has_express:
                         express_state = (station, to_line, True)
                         if express_state not in dist:
                             dist[express_state] = next_cost
@@ -178,12 +194,14 @@ class SubwayPathfinder:
                             })
                             heapq.heappush(pq, (next_cost, express_state))
 
-            # 3️⃣ 일반 → 급행 전환
+            # -----------------
+            # 3️⃣ 일반 → 급행
+            # -----------------
             if not is_express:
                 for e in self.graph.get(station, []):
                     if e["line"] == line and e["express"] == 1 and e["dept_time"] >= current_time:
                         next_state = (station, line, True)
-                        if next_state not in dist or cost < dist[next_state]:
+                        if next_state not in dist:
                             dist[next_state] = cost
                             prev[next_state] = (state, {
                                 "type": "express_switch",
