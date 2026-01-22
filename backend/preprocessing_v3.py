@@ -17,7 +17,7 @@ backend_dir = os.path.dirname(current_file)
 project_root = os.path.dirname(backend_dir)
 
 # 4. 이제 어떤 환경에서도 에러가 나지 않는 절대 경로를 완성합니다.
-TIMETABLE_PATH = os.path.join(project_root, 'data', 'raw', 'timetable.csv')
+TIMETABLE_PATH = os.path.join(project_root, 'data', 'raw', 'timetable_sample.csv')
 TRANSFER_PATH = os.path.join(project_root, 'data', 'raw', 'transfer_info.csv')
 OUTPUT_DIR = os.path.join(project_root, 'data', 'processed', '')
 
