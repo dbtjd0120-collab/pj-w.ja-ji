@@ -88,8 +88,8 @@ def preprocess_all():
     # valid_edges = df[df['열차코드'] == df['next_train_code']].copy()
     # 일부 열차코드가 다른 호선에서도 사용되는 경우가 있어서 다음줄과의 호선 비교 추가
     valid_edges = df[
-        (df['열차코드'] == df['next_train_code']) and 
-        (df['호선'] == df['next_line']) and
+        (df['열차코드'] == df['next_train_code']) & 
+        (df['호선'] == df['next_line']) &
         (df['역사코드'] != df['next_station_code'])
     ].copy()
     valid_edges['travel_time'] = valid_edges['next_arr_sec'] - valid_edges['dept_sec']
