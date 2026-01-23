@@ -28,7 +28,6 @@ print(f"불러올 파일: {TIMETABLE_PATH}")
 print(f"----------------------")
 
 def time_str_to_seconds(t_str):
-    """ HH:MM:SS 또는 MM:SS 형태의 시간을 초(int)로 변환 """
     if pd.isna(t_str): return None
     try:
         parts = list(map(int, str(t_str).split(':')))
