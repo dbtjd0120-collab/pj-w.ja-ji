@@ -1,0 +1,38 @@
+{
+  "411": {
+    "2715": {
+      "walk_sec": 232,
+      "walk_distance": 278
+    }
+  },
+  "2715": {
+    "411": {
+      "walk_sec": 232,
+      "walk_distance": 278
+    }
+  },
+  "412": {
+    "1022": {
+      "walk_sec": 70,
+      "walk_distance": 84
+    }
+  },
+  "1022": {
+    "412": {
+      "walk_sec": 70,
+      "walk_distance": 84
+    }
+  },
+  "2712": {
+    "1903": {
+      "walk_sec": 37,
+      "walk_distance": 44
+    }
+  },
+  "1903": {
+    "2712": {
+      "walk_sec": 37,
+      "walk_distance": 44
+    }
+  }
+}
