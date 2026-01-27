@@ -205,16 +205,7 @@ class SubwayPathfinder:
     def find_best_path(self, start, end, start_time_sec, mode):
 
 
-        print("===== 환승 JSON 전체 구조 =====")
-        print("총 환승역 개수:", len(self.transfers))
-        for k, v in list(self.transfers.items())[:5]:  # 앞 5개만
-            print(f"역코드 {k} -> {v}")
-        print("================================")
-            
-        """
-        mode = 0 : 최단시간
-        mode = 1 : 최소환승
-        """
+        
 
         import heapq
         INF = float("inf")
@@ -453,7 +444,6 @@ if __name__ == "__main__":
         )
         print(f"환승 횟수: {result['transfer_count']}")
 
-result = pathfinder.find_best_path(start, end, start_time_sec, mode)
 
 path = pathfinder.reconstruct_path(
     result["end_state"],
