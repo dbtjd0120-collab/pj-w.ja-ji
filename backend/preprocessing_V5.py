@@ -80,10 +80,10 @@ def preprocess_all():
                 graph[station_code][dest_code] = []
                 for _, row in dest_group.iterrows():
                     graph[station_code][dest_code].append({
-                        "line": str(row['호선']),
-                        "dep_time": int(row['dep_sec']),
-                        "arr_time": int(row['next_arr_sec']),
-                        "express": int(row['급행여부'])
+                        "line": row['호선'],
+                        "dep_time": row['dep_sec'],
+                        "arr_time": row['next_arr_sec'],
+                        "express": row['급행여부']
                     })
                 graph[station_code][dest_code].sort(key=lambda x: x['dep_time'])
 
