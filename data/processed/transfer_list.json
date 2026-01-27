@@ -1,4 +1,383 @@
 {
+  "150": {
+    "426": {
+      "walk_sec": 133,
+      "walk_distance": 159
+    }
+  },
+  "426": {
+    "150": {
+      "walk_sec": 133,
+      "walk_distance": 159
+    }
+  },
+  "151": {
+    "201": {
+      "walk_sec": 84,
+      "walk_distance": 101
+    }
+  },
+  "201": {
+    "151": {
+      "walk_sec": 84,
+      "walk_distance": 101
+    }
+  },
+  "153": {
+    "2535": {
+      "walk_sec": 260,
+      "walk_distance": 312
+    },
+    "319": {
+      "walk_sec": 98,
+      "walk_distance": 118
+    }
+  },
+  "319": {
+    "153": {
+      "walk_sec": 98,
+      "walk_distance": 118
+    },
+    "2535": {
+      "walk_sec": 98,
+      "walk_distance": 117
+    }
+  },
+  "2535": {
+    "319": {
+      "walk_sec": 98,
+      "walk_distance": 117
+    },
+    "153": {
+      "walk_sec": 260,
+      "walk_distance": 312
+    }
+  },
+  "155": {
+    "421": {
+      "walk_sec": 162,
+      "walk_distance": 194
+    }
+  },
+  "421": {
+    "155": {
+      "walk_sec": 162,
+      "walk_distance": 194
+    }
+  },
+  "159": {
+    "2637": {
+      "walk_sec": 80,
+      "walk_distance": 96
+    }
+  },
+  "2637": {
+    "159": {
+      "walk_sec": 80,
+      "walk_distance": 96
+    }
+  },
+  "156": {
+    "246": {
+      "walk_sec": 133,
+      "walk_distance": 159
+    }
+  },
+  "246": {
+    "156": {
+      "walk_sec": 133,
+      "walk_distance": 159
+    }
+  },
+  "203": {
+    "320": {
+      "walk_sec": 124,
+      "walk_distance": 149
+    }
+  },
+  "320": {
+    "203": {
+      "walk_sec": 124,
+      "walk_distance": 149
+    }
+  },
+  "204": {
+    "2536": {
+      "walk_sec": 64,
+      "walk_distance": 77
+    }
+  },
+  "2536": {
+    "204": {
+      "walk_sec": 64,
+      "walk_distance": 77
+    }
+  },
+  "205": {
+    "2537": {
+      "walk_sec": 195,
+      "walk_distance": 234
+    },
+    "422": {
+      "walk_sec": 38,
+      "walk_distance": 45
+    }
+  },
+  "422": {
+    "205": {
+      "walk_sec": 38,
+      "walk_distance": 45
+    },
+    "2537": {
+      "walk_sec": 89,
+      "walk_distance": 107
+    }
+  },
+  "2537": {
+    "422": {
+      "walk_sec": 89,
+      "walk_distance": 107
+    },
+    "205": {
+      "walk_sec": 195,
+      "walk_distance": 234
+    }
+  },
+  "206": {
+    "2636": {
+      "walk_sec": 202,
+      "walk_distance": 242
+    }
+  },
+  "2636": {
+    "206": {
+      "walk_sec": 202,
+      "walk_distance": 242
+    }
+  },
+  "208": {
+    "2541": {
+      "walk_sec": 72,
+      "walk_distance": 86
+    }
+  },
+  "2541": {
+    "208": {
+      "walk_sec": 72,
+      "walk_distance": 86
+    }
+  },
+  "211": {
+    "211": {
+      "walk_sec": 19,
+      "walk_distance": 23
+    }
+  },
+  "212": {
+    "2729": {
+      "walk_sec": 64,
+      "walk_distance": 77
+    }
+  },
+  "2729": {
+    "212": {
+      "walk_sec": 64,
+      "walk_distance": 77
+    }
+  },
+  "216": {
+    "2815": {
+      "walk_sec": 158,
+      "walk_distance": 190
+    }
+  },
+  "2815": {
+    "216": {
+      "walk_sec": 158,
+      "walk_distance": 190
+    }
+  },
+  "218": {},
+  "4130": {},
+  "223": {
+    "330": {
+      "walk_sec": 63,
+      "walk_distance": 75
+    }
+  },
+  "330": {
+    "223": {
+      "walk_sec": 63,
+      "walk_distance": 75
+    }
+  },
+  "226": {
+    "433": {
+      "walk_sec": 62,
+      "walk_distance": 74
+    }
+  },
+  "433": {
+    "226": {
+      "walk_sec": 62,
+      "walk_distance": 74
+    }
+  },
+  "233": {
+    "2746": {
+      "walk_sec": 230,
+      "walk_distance": 276
+    }
+  },
+  "2746": {
+    "233": {
+      "walk_sec": 230,
+      "walk_distance": 276
+    }
+  },
+  "234": {
+    "234": {
+      "walk_sec": 68,
+      "walk_distance": 81
+    }
+  },
+  "1007": {},
+  "236": {
+    "2524": {
+      "walk_sec": 92,
+      "walk_distance": 110
+    }
+  },
+  "2524": {
+    "236": {
+      "walk_sec": 92,
+      "walk_distance": 110
+    }
+  },
+  "237": {},
+  "4113": {},
+  "238": {
+    "2623": {
+      "walk_sec": 68,
+      "walk_distance": 82
+    }
+  },
+  "2623": {
+    "238": {
+      "walk_sec": 68,
+      "walk_distance": 82
+    }
+  },
+  "243": {
+    "2532": {
+      "walk_sec": 177,
+      "walk_distance": 212
+    }
+  },
+  "2532": {
+    "243": {
+      "walk_sec": 177,
+      "walk_distance": 212
+    }
+  },
+  "311": {
+    "2615": {
+      "walk_sec": 151,
+      "walk_distance": 181
+    }
+  },
+  "2615": {
+    "311": {
+      "walk_sec": 151,
+      "walk_distance": 181
+    }
+  },
+  "312": {
+    "2613": {
+      "walk_sec": 83,
+      "walk_distance": 100
+    }
+  },
+  "2613": {
+    "312": {
+      "walk_sec": 83,
+      "walk_distance": 100
+    }
+  },
+  "321": {
+    "423": {
+      "walk_sec": 14,
+      "walk_distance": 17
+    }
+  },
+  "423": {
+    "321": {
+      "walk_sec": 14,
+      "walk_distance": 17
+    }
+  },
+  "323": {
+    "2634": {
+      "walk_sec": 108,
+      "walk_distance": 130
+    }
+  },
+  "2634": {
+    "323": {
+      "walk_sec": 108,
+      "walk_distance": 130
+    }
+  },
+  "329": {
+    "4123": {
+      "walk_sec": 129,
+      "walk_distance": 155
+    },
+    "2736": {
+      "walk_sec": 141,
+      "walk_distance": 169
+    }
+  },
+  "2736": {
+    "329": {
+      "walk_sec": 141,
+      "walk_distance": 169
+    },
+    "4123": {
+      "walk_sec": 262,
+      "walk_distance": 314
+    }
+  },
+  "4123": {
+    "2736": {
+      "walk_sec": 262,
+      "walk_distance": 314
+    }
+  },
+  "340": {
+    "2818": {
+      "walk_sec": 29,
+      "walk_distance": 35
+    }
+  },
+  "2818": {
+    "340": {
+      "walk_sec": 29,
+      "walk_distance": 35
+    }
+  },
+  "342": {
+    "2558": {
+      "walk_sec": 54,
+      "walk_distance": 65
+    }
+  },
+  "2558": {
+    "342": {
+      "walk_sec": 54,
+      "walk_distance": 65
+    }
+  },
   "411": {
     "2715": {
       "walk_sec": 232,
@@ -11,28 +390,104 @@
       "walk_distance": 278
     }
   },
-  "412": {
-    "1022": {
-      "walk_sec": 70,
-      "walk_distance": 84
+  "412": {},
+  "1022": {},
+  "428": {
+    "2629": {
+      "walk_sec": 129,
+      "walk_distance": 155
     }
   },
-  "1022": {
-    "412": {
-      "walk_sec": 70,
-      "walk_distance": 84
+  "2629": {
+    "428": {
+      "walk_sec": 129,
+      "walk_distance": 155
     }
   },
-  "2712": {
-    "1903": {
-      "walk_sec": 37,
-      "walk_distance": 44
+  "431": {},
+  "4120": {},
+  "2513": {},
+  "4102": {},
+  "2519": {},
+  "200": {},
+  "2526": {},
+  "1032": {},
+  "2527": {},
+  "4115": {},
+  "2530": {
+    "2627": {
+      "walk_sec": 61,
+      "walk_distance": 73
     }
   },
-  "1903": {
-    "2712": {
-      "walk_sec": 37,
-      "walk_distance": 44
+  "2627": {
+    "2530": {
+      "walk_sec": 61,
+      "walk_distance": 73
     }
-  }
+  },
+  "2538": {
+    "2635": {
+      "walk_sec": 87,
+      "walk_distance": 104
+    }
+  },
+  "2635": {
+    "2538": {
+      "walk_sec": 87,
+      "walk_distance": 104
+    }
+  },
+  "2545": {
+    "2727": {
+      "walk_sec": 63,
+      "walk_distance": 75
+    }
+  },
+  "2727": {
+    "2545": {
+      "walk_sec": 63,
+      "walk_distance": 75
+    }
+  },
+  "2548": {
+    "2812": {
+      "walk_sec": 29,
+      "walk_distance": 35
+    }
+  },
+  "2812": {
+    "2548": {
+      "walk_sec": 29,
+      "walk_distance": 35
+    }
+  },
+  "2549": {
+    "2549": {
+      "walk_sec": 16,
+      "walk_distance": 19
+    }
+  },
+  "2556": {},
+  "4136": {},
+  "2646": {
+    "2719": {
+      "walk_sec": 38,
+      "walk_distance": 46
+    }
+  },
+  "2719": {
+    "2646": {
+      "walk_sec": 38,
+      "walk_distance": 46
+    }
+  },
+  "2712": {},
+  "1903": {},
+  "2748": {},
+  "1702": {},
+  "2752": {},
+  "1821": {},
+  "2816": {},
+  "4133": {}
 }

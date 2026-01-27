@@ -7,7 +7,7 @@ current_file = os.path.abspath(__file__)        # 파일 절대경로 계산
 backend_dir = os.path.dirname(current_file)     # 상위폴더로 이동
 project_root = os.path.dirname(backend_dir)     # 상취 폴더로 이동
 
-TIMETABLE_PATH = os.path.join(project_root, 'data', 'raw', 'timetable_sample.csv')
+TIMETABLE_PATH = os.path.join(project_root, 'data', 'raw', 'timetable.csv')
 TRANSFER_PATH = os.path.join(project_root, 'data', 'raw', 'transfer_info.csv')
 OUTPUT_DIR = os.path.join(project_root, 'data', 'processed', '')
 
@@ -32,7 +32,7 @@ def time_str_to_seconds(t_str):
 def preprocess_all():
     # 1. 데이터 로딩
     print("데이터 로딩 중...")
-    df = pd.read_csv(TIMETABLE_PATH, encoding='EUC-KR', dtype={'역사코드': str, '호선': str, '열차코드': str})
+    df = pd.read_csv(TIMETABLE_PATH, encoding='EUC-KR', dtype={'호선': str, '열차코드': str})
     df_trans = pd.read_csv(TRANSFER_PATH, encoding='EUC-KR', dtype={'호선': str})
 
     df['arr_sec'] = df['열차도착시간'].apply(time_str_to_seconds)
@@ -65,6 +65,9 @@ def preprocess_all():
         (df['호선'] == df['next_line'])
     ].copy()
 
+    valid_edges['역사코드'] = valid_edges['역사코드'].astype(str)
+
+
     day_types = {'DAY': 'weekday', 'SAT': 'saturday', 'END': 'holiday'}
     if not os.path.exists(OUTPUT_DIR): os.makedirs(OUTPUT_DIR)
 
@@ -72,17 +75,17 @@ def preprocess_all():
         day_df = valid_edges[valid_edges['주중주말'] == day_type]
         graph = {}
         for station_code, group in day_df.groupby('역사코드'):
-            # groupby() -> 특정 컬럼을 기준으로 DataFrame을 그룹화
-            graph[station_code] = []
-            for _, row in group.iterrows():     # _ -> 해당 인덱스는 사용하지 않으므로 무시
-                graph[station_code].append({
-                    "dest_code": row['next_station_code'],  # 다음 역 코드
-                    "line": row['호선'],
-                    "dep_time": row['dep_sec'],           # 현재 역 출발 시간 (초)
-                    "arr_time": row['next_arr_sec'],        # 다음 역 도착 시간 (초)
-                    "express": row['급행여부']  ,            # 급행 여부
-                })
-            graph[station_code].sort(key=lambda x: x['dep_time']) # 시간순 정렬 (이진 탐색 알고리즘 사용 위함)
+            graph[station_code] = {}
+            for dest_code, dest_group in group.groupby('next_station_code'):
+                graph[station_code][dest_code] = []
+                for _, row in dest_group.iterrows():
+                    graph[station_code][dest_code].append({
+                        "line": str(row['호선']),
+                        "dep_time": int(row['dep_sec']),
+                        "arr_time": int(row['next_arr_sec']),
+                        "express": int(row['급행여부'])
+                    })
+                graph[station_code][dest_code].sort(key=lambda x: x['dep_time'])
 
         with open(f"{OUTPUT_DIR}graph_{file_suffix}.json", 'w', encoding='EUC-KR') as f:
             json.dump(graph, f, ensure_ascii=False, indent=2)
@@ -90,40 +93,47 @@ def preprocess_all():
 
     print("환승 데이터 처리 중...")
     transfer_dict = {}
-    
-    # {역사명 :역사코드} 형태로 저장
+
+    # {현재역코드 : {trs역코드1:환승정보, trs역코드2:환승정보}} 형태로 저장
     name_to_code = df.groupby(['역사명', '호선'])['역사코드'].first().to_dict()
+    line_set = set(df['호선'].unique())
 
     for _, row in df_trans.iterrows():
         st_name = row['환승역명']
         from_line = row['호선']
         to_line = row['환승노선'].replace('호선', '')
-        st1_code = name_to_code.get((st_name, from_line))
-        st2_code = name_to_code.get((st_name, to_line))
+        # 데이터 타입이 무엇이든 안전하게 처리하려면 자료형 변환을 해줘야 한다.
+        # to_line = str(row['환승노선']).replace('호선', '').strip()
+            
+        if to_line in line_set and from_line in line_set:
+            st1_code = name_to_code.get((st_name, from_line))
+            st2_code = name_to_code.get((st_name, to_line))
 
-        if st1_code and st2_code:
-            walk_sec = time_str_to_seconds(row['환승소요시간'])
-            walk_distance = int(row.get('환승거리', 0))
+            if st1_code is not None and st2_code is not None:
+                walk_sec = time_str_to_seconds(row['환승소요시간'])
+                walk_distance = int(row.get('환승거리'))
 
-            if st1_code not in transfer_dict: transfer_dict[st1_code] = {}
-            transfer_dict[st1_code][st2_code] = {
-                "walk_sec": walk_sec,
-                "walk_distance": walk_distance
-            }
-            if st2_code not in transfer_dict: transfer_dict[st2_code] = {}
-            transfer_dict[st2_code][st1_code] = {
-                "walk_sec": walk_sec,
-                "walk_distance": walk_distance
-            }
+                if st1_code not in transfer_dict: transfer_dict[st1_code] = {}
+                else:
+                    transfer_dict[st1_code][st2_code] = {
+                    "walk_sec": walk_sec,
+                    "walk_distance": walk_distance
+                }
+                if st2_code not in transfer_dict: transfer_dict[st2_code] = {}
+                else:
+                    transfer_dict[st2_code][st1_code] = {
+                        "walk_sec": walk_sec,
+                        "walk_distance": walk_distance
+                    }
 
     with open(f"{OUTPUT_DIR}transfer_list.json", 'w', encoding='EUC-KR') as f:
         json.dump(transfer_dict, f, ensure_ascii=False, indent=2)
-    print(" -> transfer_list.json 저장 완료 (역사코드 기반 필터링 적용)")
+    print(" -> transfer_list.json 저장 완료")
 
     # 역 목록(Station List) 저장
-    unique_stations = df[['역사코드', '역사명', '호선']].drop_duplicates().to_dict(orient='records')
+    station_map = df.groupby('역사명')['역사코드'].apply(lambda x: list(set(x))).to_dict()
     with open(f"{OUTPUT_DIR}stations_list.json", 'w', encoding='EUC-KR') as f:
-        json.dump(unique_stations, f, ensure_ascii=False, indent=2)
+        json.dump(station_map, f, ensure_ascii=False, indent=2)
     print(" -> stations_list.json 저장 완료")
 
 
