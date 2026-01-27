@@ -207,7 +207,7 @@ class SubwayPathfinder:
 
         
 
-        import heapq
+        
         INF = float("inf")
 
         # -------------------------------------------------
