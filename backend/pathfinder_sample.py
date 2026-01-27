@@ -10,7 +10,7 @@ project_root = os.path.dirname(backend_dir)     # 상취 폴더로 이동
 
 TIMETABLE_PATH = os.path.join(project_root, 'data', 'raw', 'timetable.csv')
 TRANSFER_PATH = os.path.join(project_root, 'data', 'raw', 'transfer_info.csv')
-OUTPUT_DIR = os.path.join(project_root, 'data', 'processed')
+OUTPUT_DIR = os.path.join(project_root, 'data', 'processed', '')
 
 class Pathfinder:
     def __init__(self, in_day):
