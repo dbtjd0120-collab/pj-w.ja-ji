@@ -116,6 +116,13 @@ class SubwayPathfinder:
 
         return hour * 3600 + minute * 60 + second
     
+    def _sec_to_hhmm(self, sec):
+        sec = int(sec)
+        h = sec // 3600
+        m = (sec % 3600) // 60
+        return f"{h:02d}:{m:02d}"
+
+    
     def get_user_input(self):
         """
         사용자로부터 출발역, 도착역, 출발 시간, 경로 기준을 입력받는다.
@@ -439,7 +446,11 @@ if __name__ == "__main__":
         print("❌ 경로를 찾지 못했습니다.")
         exit()
     else:
-        print(f"도착시간(초): {result['arrive_time']}")
+        print(f"도착시간: {pathfinder._sec_to_hhmm(result['arrive_time'])}")
+        print(
+                f"총 소요 시간: "
+            f"{int((result['arrive_time'] - start_time_sec) // 60)}분"
+        )
         print(f"환승 횟수: {result['transfer_count']}")
 
 result = pathfinder.find_best_path(start, end, start_time_sec, mode)
@@ -453,18 +464,24 @@ for state, info in path:
     node, line = state
 
     if info is None:
-        print(f"출발: {node} ({line}호선)")
+        print(
+            f"출발: {pathfinder.code_to_name[node]} ({line}호선) "
+            f"{pathfinder._sec_to_hhmm(start_time_sec)}"
+        )
+
         continue
 
     if info["type"] == "train":
         print(
-            f"{node} ({line}호선) ← "
+            f"{pathfinder.code_to_name[node]} ({line}호선) ← "
             f"[열차 {info['train_code']}] "
-            f"{info['dept_time']} → {info['arr_time']}"
+            f"{pathfinder._sec_to_hhmm(info['dept_time'])} → "
+            f"{pathfinder._sec_to_hhmm(info['arr_time'])}"
         )
+
     else:
         print(
-            f"{node} ({line}호선) ← "
+            f"{pathfinder.code_to_name[node]} ({line}호선) ← "
             f"[환승 {info['walk_sec']}초]"
         )
 
