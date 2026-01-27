@@ -7,7 +7,7 @@ backend_file = os.path.dirname(current_file)
 project_file = os.path.dirname(backend_file)
 
 Timetable_path = os.path.join(project_file,"data","raw","timetable_sample.csv")
-Transfer_path = os.path.join(project_file,"data","raw","transfer_info.csv")
+Transfer_path = os.path.join(project_file,"data","processed","transfer_list.json")
 df = pd.read_csv(Timetable_path,encoding = "euc-kr")
 print(df.head())
 
@@ -54,11 +54,32 @@ for train_id, group in df.groupby("열차코드"):
         edge = {
             "to": to_node,
             "line": cur["호선"],
+            "type": "train",
             "is_express": cur["급행여부"],
             "dep_time": dep_time,
             "travel_time": travel_time
         }
 
         graph[from_node].append(edge)
-print(graph)
+df_dep = df[["역사코드", "dep_sec"]]
+df_dep = df_dep.dropna(subset=["dep_sec"])
+dep_time_by_station = (
+    df_dep
+    .groupby("역사코드")["dep_sec"]
+    .apply(list)
+    .to_dict()
+)
+df_small = df[["역사코드", "arr_sec"]]
+df_small = df_small.dropna(subset=["arr_sec"])
+
+arr_time_by_station = (
+    df_small
+    .groupby("역사코드")["arr_sec"]
+    .apply(list)
+    .to_dict()
+)
+
+
+
+
 
